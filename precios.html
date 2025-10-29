@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html data-bs-theme="light" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Luz Verde — Precios</title>
+<meta content="Luz Verde: velas ecológicas, comercio justo y economía circular." name="description"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<nav class="navbar navbar-expand-lg sticky-top">
+<div class="container"><div class="d-flex align-items-center justify-content-between mb-3"><div></div><button aria-controls="cartCanvas" class="btn btn-outline-success rounded-4" data-bs-target="#cartCanvas" data-bs-toggle="offcanvas" type="button"><span class="me-1">🛒</span><span id="cartCount"></span></button></div>
+<a class="navbar-brand fw-bold" href="index.html">Luz Verde</a>
+<button aria-label="Abrir menú" class="navbar-toggler border-0" data-bs-target="#menuMovil" data-bs-toggle="offcanvas" type="button">
+<span class="navbar-toggler-icon" style="filter: invert(1)"></span>
+</button>
+<div class="collapse navbar-collapse">
+<ul class="navbar-nav ms-auto gap-lg-2">
+<li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+<li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+<li class="nav-item"><a class="nav-link" href="precios.html">Precios</a></li>
+<li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+<li class="nav-item"><a class="nav-link" href="pedidos.html">Pedidos</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<div class="offcanvas offcanvas-end" id="menuMovil" tabindex="-1">
+<div class="offcanvas-header">
+<h5 class="offcanvas-title">Navegación</h5>
+<button aria-label="Cerrar" class="btn-close" data-bs-dismiss="offcanvas"></button>
+</div>
+<div class="offcanvas-body">
+<ul class="navbar-nav">
+<li class="nav-item"><a class="nav-link" data-bs-dismiss="offcanvas" href="index.html">Inicio</a></li>
+<li class="nav-item"><a class="nav-link" data-bs-dismiss="offcanvas" href="productos.html">Productos</a></li>
+<li class="nav-item"><a class="nav-link" data-bs-dismiss="offcanvas" href="precios.html">Precios</a></li>
+<li class="nav-item"><a class="nav-link" data-bs-dismiss="offcanvas" href="contacto.html">Contacto</a></li>
+</ul>
+</div>
+</div>
+<main class="py-5 flex-grow-1">
+<div class="container">
+<h1 class="h3 fw-bold mb-3">Precios y existencias</h1>
+<div class="table-responsive rounded-4 border">
+<table class="table align-middle mb-0">
+<thead><tr><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Cantidad</th><th class="text-end">Agregar</th></tr></thead>
+<tbody>
+<tr data-name="Vela Clásica Aromática" data-price="120"><td>Vela Clásica Aromática</td><td>$120 – $160 MXN</td><td>5</td><td style="max-width:120px"><input class="form-control form-control-sm qty-input" min="1" type="number" value="1"/></td><td class="text-end"><button class="btn btn-success btn-sm rounded-4 add-to-cart">Agregar</button></td></tr>
+<tr data-name="Vela en Frasco Decorativo" data-price="180"><td>Vela en Frasco Decorativo</td><td>$180 – $230 MXN</td><td>9</td><td style="max-width:120px"><input class="form-control form-control-sm qty-input" min="1" type="number" value="1"/></td><td class="text-end"><button class="btn btn-success btn-sm rounded-4 add-to-cart">Agregar</button></td></tr>
+<tr data-name="Vela Artesanal en Concreto o Cerámica" data-price="200"><td>Vela Artesanal en Concreto o Cerámica</td><td>$200 – $280 MXN</td><td>25</td><td style="max-width:120px"><input class="form-control form-control-sm qty-input" min="1" type="number" value="1"/></td><td class="text-end"><button class="btn btn-success btn-sm rounded-4 add-to-cart">Agregar</button></td></tr>
+<tr data-name="Mini velas o set de viaje" data-price="60"><td>Mini velas o set de viaje</td><td>$60 – $90 c/u · Set $250 – $350</td><td>43</td><td style="max-width:120px"><input class="form-control form-control-sm qty-input" min="1" type="number" value="1"/></td><td class="text-end"><button class="btn btn-success btn-sm rounded-4 add-to-cart">Agregar</button></td></tr>
+<tr data-name="Velas decorativas (figuras/temáticas)" data-price="100"><td>Velas decorativas (figuras/temáticas)</td><td>$100 – $200 MXN</td><td>23</td><td style="max-width:120px"><input class="form-control form-control-sm qty-input" min="1" type="number" value="1"/></td><td class="text-end"><button class="btn btn-success btn-sm rounded-4 add-to-cart">Agregar</button></td></tr>
+<tr data-name="Vela premium con cristales o hierbas" data-price="250"><td>Vela premium con cristales o hierbas</td><td>$250 – $350 MXN</td><td>13</td><td style="max-width:120px"><input class="form-control form-control-sm qty-input" min="1" type="number" value="1"/></td><td class="text-end"><button class="btn btn-success btn-sm rounded-4 add-to-cart">Agregar</button></td></tr>
+</tbody>
+</table>
+</div>
+<p class="text-muted small mt-2">*Precios sujetos a cambios por temporada y materiales.</p>
+</div>
+</main>
+<footer class="py-4 mt-auto">
+<div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
+<p class="mb-2 mb-md-0 small">© <span id="anio"></span> Luz Verde · Hecho con conciencia</p>
+<div class="d-flex gap-3 small">
+<a class="link-light text-decoration-none" href="index.html">Inicio</a>
+<a class="link-light text-decoration-none" href="productos.html">Productos</a>
+<a class="link-light text-decoration-none" href="precios.html">Precios</a>
+<a class="link-light text-decoration-none" href="contacto.html">Contacto</a>
+<a class="link-light text-decoration-none" href="pedidos.html">Pedidos</a>
+</div>
+</div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="main.js"></script>
+
+<div class="offcanvas offcanvas-end" id="cartCanvas" tabindex="-1">
+<div class="offcanvas-header">
+<h5 class="offcanvas-title">Tu carrito</h5>
+<button aria-label="Cerrar" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
+</div>
+<div class="offcanvas-body d-flex flex-column">
+<div class="mb-3" id="cartItems"></div>
+<div class="mt-auto">
+<div class="d-flex justify-content-between fw-semibold mb-2">
+<span>Total</span>
+<span id="cartTotal">$0</span>
+</div>
+<div class="d-flex gap-2">
+<button class="btn btn-outline-danger w-50" id="clearCart">Vaciar</button>
+<a class="btn btn-success w-50" href="pedidos.html">Ir a pedidos</a>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+  const LS_KEY='luz_verde_cart'; let cart=[];
+  function money(n){ try { return new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(n);}catch(e){return '$'+n;} }
+  function load(){ try{ cart=JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch(e){ cart=[]; } }
+  function save(){ localStorage.setItem(LS_KEY, JSON.stringify(cart)); }
+  function count(){ return cart.reduce((a,b)=>a+b.qty,0); }
+  function total(){ return cart.reduce((a,b)=>a+(b.price*b.qty),0); }
+  function renderCount(){ const c=document.getElementById('cartCount'); if(c) c.textContent='Carrito ('+count()+')'; }
+  function escapeHtml(t){ if(!t&&t!==0) return ''; return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+  function renderList(){
+    const wrap=document.getElementById('cartItems'); if(!wrap) return;
+    wrap.innerHTML='';
+    if(cart.length===0){ wrap.innerHTML='<p class="text-muted">Tu carrito está vacío.</p>'; }
+    cart.forEach((item,idx)=>{
+      const row=document.createElement('div'); row.className='d-flex align-items-center justify-content-between border rounded-4 p-2 mb-2';
+      row.innerHTML=`
+        <div class="me-2">
+          <div class="fw-semibold">${escapeHtml(item.name)}</div>
+          <div class="text-muted small">${money(item.price)}</div>
+        </div>
+        <div class="d-flex align-items-center gap-1">
+          <button class="btn btn-sm btn-outline-secondary" data-act="dec" data-idx="${idx}">-</button>
+          <input class="form-control form-control-sm text-center" style="width:64px" data-idx="${idx}" data-act="set" type="number" min="1" value="${item.qty}">
+          <button class="btn btn-sm btn-outline-secondary" data-act="inc" data-idx="${idx}">+</button>
+          <button class="btn btn-sm btn-outline-danger ms-2" data-act="del" data-idx="${idx}">×</button>
+        </div>`;
+      wrap.appendChild(row);
+    });
+    const tot=document.getElementById('cartTotal'); if(tot) tot.textContent=money(total());
+  }
+  function addItem(name,price,qty){ qty=Math.max(1,parseInt(qty||1,10)||1); price=parseFloat(price)||0;
+    const i=cart.findIndex(x=>x.name===name && x.price===price);
+    if(i>=0){ cart[i].qty+=qty; } else { cart.push({name,price,qty}); }
+    save(); renderCount(); renderList();
+  }
+  function attachRows(){
+    document.querySelectorAll('tbody tr').forEach(tr=>{
+      const btn=tr.querySelector('.add-to-cart'); const qty=tr.querySelector('.qty-input');
+      if(btn){ btn.addEventListener('click', ()=>{
+        const name=tr.dataset.name||'Producto';
+        const price=parseFloat(tr.dataset.price||'0')||0;
+        const amount=qty?(parseInt(qty.value,10)||1):1;
+        addItem(name,price,amount);
+        const oc=document.getElementById('cartCanvas'); if(oc&&bootstrap?.Offcanvas){ new bootstrap.Offcanvas(oc).show(); }
+      });}
+    });
+  }
+  function attachCart(){
+    const wrap=document.getElementById('cartItems'); if(!wrap) return;
+    wrap.addEventListener('click', (e)=>{
+      const btn=e.target.closest('button'); if(!btn) return;
+      const act=btn.getAttribute('data-act'); const idx=parseInt(btn.getAttribute('data-idx'),10);
+      if(Number.isNaN(idx)||!cart[idx]) return;
+      if(act==='inc') cart[idx].qty++;
+      if(act==='dec') cart[idx].qty=Math.max(1,cart[idx].qty-1);
+      if(act==='del') cart.splice(idx,1);
+      save(); renderCount(); renderList();
+    });
+    wrap.addEventListener('change',(e)=>{
+      const inp=e.target.closest('input[data-act="set"]'); if(!inp) return;
+      const idx=parseInt(inp.getAttribute('data-idx'),10); if(Number.isNaN(idx)||!cart[idx]) return;
+      cart[idx].qty=Math.max(1,parseInt(inp.value,10)||1);
+      save(); renderCount(); renderList();
+    });
+    const clearBtn=document.getElementById('clearCart'); if(clearBtn){ clearBtn.addEventListener('click',()=>{ if(confirm('¿Vaciar carrito?')){ cart=[]; save(); renderCount(); renderList(); } }); }
+  }
+  load(); renderCount(); renderList(); attachRows(); attachCart();
+})();
+</script>
+</body>
+</html>
