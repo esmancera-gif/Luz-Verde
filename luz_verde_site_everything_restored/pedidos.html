@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Luz Verde — Pedidos</title>
+
+  <meta name="description" content="Gestor de pedidos para Luz Verde: crea, consulta y administra pedidos con almacenamiento local.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    body { background: var(--lv-bg); padding: 24px; }
+    .card { box-shadow: 0 6px 18px rgba(15,23,42,0.06); }
+    .small-muted { font-size: 0.85rem; color: #6c757d; }
+    .cursor-pointer { cursor: pointer; }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">Luz Verde</a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuMovil" aria-label="Abrir menú">
+        <span class="navbar-toggler-icon" style="filter: invert(1)"></span>
+      </button>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+          <li class="nav-item"><a class="nav-link" href="precios.html">Precios</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+          <li class="nav-item"><a class="nav-link" href="pedidos.html">Pedidos</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="menuMovil">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Navegación</h5>
+      <button class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" data-bs-dismiss="offcanvas" href="index.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-dismiss="offcanvas" href="productos.html">Productos</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-dismiss="offcanvas" href="precios.html">Precios</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-dismiss="offcanvas" href="contacto.html">Contacto</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-dismiss="offcanvas" href="pedidos.html">Pedidos</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container my-4 flex-grow-1">
+    <header class="d-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0">Gestor de Pedidos</h1>
+      <div>
+        <button id="btnToggleTheme" class="btn btn-outline-light btn-sm">Alternar modo demo</button>
+      </div>
+    </header>
+
+    <div class="row gy-4">
+      <!-- Formulario Pedido -->
+      <div class="col-lg-4">
+        <div class="card p-3">
+          <h5 class="card-title">Nuevo pedido</h5>
+          <p class="small-muted">Rellena los datos y presiona <strong>Crear pedido</strong>.</p>
+
+          <form id="orderForm" novalidate>
+            <div class="mb-2">
+              <label class="form-label">Nombre</label>
+              <input id="name" class="form-control" type="text" required>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Correo</label>
+              <input id="email" class="form-control" type="email" required>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Tipo de evento</label>
+              <input id="eventType" class="form-control" type="text" required>
+            </div>
+
+            <div class="mb-2 d-flex gap-2">
+              <div class="flex-fill">
+                <label class="form-label">Cantidad</label>
+                <input id="quantity" class="form-control" type="number" min="1" value="1" required>
+              </div>
+              
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Notas</label>
+              <textarea id="notes" class="form-control" rows="2"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 rounded-4">Crear pedido</button>
+          </form>
+
+          <div id="formHelp" class="small-muted mt-3">
+            Los pedidos se guardan localmente en este navegador (localStorage).
+          </div>
+        </div>
+
+        <!-- Alerta (Bootstrap 5) -->
+        <div id="serverAlert" class="alert alert-success alert-dismissible fade mt-3 d-none" role="alert">
+          <span id="serverAlertText"></span>
+          <button type="button" class="btn-close" aria-label="Close" id="closeAlert"></button>
+        </div>
+      </div>
+
+      <!-- Lista de pedidos -->
+      <div class="col-lg-8">
+        <div class="card p-3">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h5 class="card-title mb-0">Pedidos</h5>
+            <div class="d-flex gap-2 align-items-center">
+              <span class="small-muted">Total: <strong id="totalOrders">0</strong></span>
+              <button id="btnClearAll" class="btn btn-outline-danger btn-sm">Eliminar todos</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table id="ordersTable" class="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Cliente</th>
+                  <th>Tipo de evento</th>
+                  <th>Cantidad</th>
+                  <th>Total</th>
+                  <th>Estado</th>
+                  <th class="text-end">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="ordersBody">
+                <!-- Se rellenará dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+
+          <div id="emptyState" class="text-center py-4 small-muted" style="display:none;">
+            No hay pedidos todavía. Crea uno desde el formulario.
+          </div>
+        </div>
+
+<div class="d-flex justify-content-end mt-3">
+  <button id="btnEnviarTabla" class="btn btn-primary">Enviar</button>
+</div>
+<div id="tablaAlert" class="alert alert-success alert-dismissible fade mt-3 d-none" role="alert">
+  <span>El mensaje se ha enviado con éxito.</span>
+  <button type="button" class="btn-close" aria-label="Cerrar" onclick="this.parentElement.classList.add('d-none'); this.parentElement.classList.remove('show')"></button>
+</div>
+<script>
+(function(){
+  const btn = document.getElementById('btnEnviarTabla');
+  if (btn){
+    btn.addEventListener('click', function(){
+      const alertBox = document.getElementById('tablaAlert');
+      if (alertBox){
+        alertBox.classList.remove('d-none');
+        alertBox.classList.add('show');
+      } else {
+        alert('El mensaje se ha enviado con éxito.');
+      }
+    });
+  }
+})();
+</script>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal detalle pedido -->
+  <div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Detalle del pedido</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <dl class="row">
+            <dt class="col-sm-3">ID</dt><dd class="col-sm-9" id="modalId"></dd>
+            <dt class="col-sm-3">Cliente</dt><dd class="col-sm-9" id="modalCliente"></dd>
+            <dt class="col-sm-3">Correo</dt><dd class="col-sm-9" id="modalCorreo"></dd>
+            <dt class="col-sm-3">Producto</dt><dd class="col-sm-9" id="modalProducto"></dd>
+            <dt class="col-sm-3">Cantidad</dt><dd class="col-sm-9" id="modalCantidad"></dd>
+            <dt class="col-sm-3">Notas</dt><dd class="col-sm-9" id="modalNotas"></dd>
+            <dt class="col-sm-3">Estado</dt><dd class="col-sm-9" id="modalEstado"></dd>
+          </dl>
+        </div>
+        <div class="modal-footer">
+          <button id="copyId" class="btn btn-outline-secondary">Copiar ID</button>
+          <button id="markShippedModal" class="btn btn-success">Marcar como enviado</button>
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div id="liveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toastText">Pedido creado</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="py-4 mt-auto">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
+      <p class="mb-2 mb-md-0 small">© <span id="anio"></span> Luz Verde · Hecho con conciencia</p>
+      <div class="d-flex gap-3 small">
+        <a class="link-light text-decoration-none" href="index.html">Inicio</a>
+        <a class="link-light text-decoration-none" href="productos.html">Productos</a>
+        <a class="link-light text-decoration-none" href="precios.html">Precios</a>
+        <a class="link-light text-decoration-none" href="contacto.html">Contacto</a>
+        <a class="link-light text-decoration-none" href="pedidos.html">Pedidos</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+  <script>
+    const LS_KEY = "app_pedidos_v1";
+    let orders = [];
+    const orderForm = document.getElementById("orderForm");
+    const ordersBody = document.getElementById("ordersBody");
+    const totalOrdersEl = document.getElementById("totalOrders");
+    const emptyState = document.getElementById("emptyState");
+    const serverAlert = document.getElementById("serverAlert");
+    const serverAlertText = document.getElementById("serverAlertText");
+    const closeAlert = document.getElementById("closeAlert");
+    const liveToastEl = document.getElementById("liveToast");
+    const toast = new bootstrap.Toast(liveToastEl, { delay: 2500 });
+    const orderModalEl = document.getElementById('orderModal');
+    const orderModal = new bootstrap.Modal(orderModalEl, {});
+
+    function loadOrders(){ const raw = localStorage.getItem(LS_KEY); orders = raw ? JSON.parse(raw) : []; }
+    function saveOrders(){ localStorage.setItem(LS_KEY, JSON.stringify(orders)); }
+    function generateOrderId(){
+      const t = Date.now().toString(36).toUpperCase();
+      const r = Math.floor(Math.random()*9000 + 1000).toString();
+      return `PED-${t}-${r}`;
+    }
+    function renderOrders(){
+      ordersBody.innerHTML = "";
+      emptyState.style.display = orders.length === 0 ? "block" : "none";
+      orders.forEach(order => {
+        const tr = document.createElement("tr");
+        const stateBadge = order.status === "Enviado" ? '<span class="badge bg-success">Enviado</span>' : '<span class="badge bg-secondary">Pendiente</span>';
+        tr.innerHTML = `
+          <td class="align-middle">${order.id}</td>
+          <td class="align-middle">
+            <div>${escapeHtml(order.name)}</div>
+            <div class="small-muted">${escapeHtml(order.email)}</div>
+          </td>
+          <td class="align-middle">${escapeHtml(order.eventType)}</td>
+          <td class="align-middle">${order.quantity}</td>
+          <td class="align-middle">$${order.total}</td>
+          <td class="align-middle">${stateBadge}</td>
+          <td class="text-end align-middle">
+            <button class="btn btn-sm btn-outline-primary btn-view me-1">Ver</button>
+            <button class="btn btn-sm btn-outline-success btn-ship me-1">${order.status === "Enviado" ? "Revertir" : "Marcar enviado"}</button>
+            <button class="btn btn-sm btn-outline-danger btn-delete">Eliminar</button>
+          </td>`;
+        tr.querySelector(".btn-view").addEventListener("click", () => openModal(order.id));
+        tr.querySelector(".btn-ship").addEventListener("click", () => toggleShipped(order.id));
+        tr.querySelector(".btn-delete").addEventListener("click", () => deleteOrder(order.id));
+        ordersBody.appendChild(tr);
+      });
+      totalOrdersEl.textContent = orders.length;
+    }
+    function escapeHtml(text){
+      if (!text && text !== 0) return "";
+      return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+    function showAlert(message){
+      serverAlertText.textContent = message; serverAlert.classList.remove("d-none"); serverAlert.classList.add("show");
+    }
+    function hideAlert(){ serverAlert.classList.add("d-none"); serverAlert.classList.remove("show"); }
+    function showToast(message){ document.getElementById("toastText").textContent = message; toast.show(); }
+    function addOrder(data){ orders.unshift(data); saveOrders(); renderOrders(); }
+    function deleteOrder(id){
+      if (!confirm("¿Eliminar este pedido?")) return;
+      orders = orders.filter(o => o.id !== id); saveOrders(); renderOrders(); }
+    function toggleShipped(id){
+      orders = orders.map(o => { if (o.id === id) o.status = (o.status === "Enviado") ? "Pendiente" : "Enviado"; return o; });
+      saveOrders(); renderOrders(); }
+    function openModal(id){
+      const order = orders.find(o => o.id === id); if (!order) return;
+      document.getElementById("modalId").textContent = order.id;
+      document.getElementById("modalCliente").textContent = order.name;
+      document.getElementById("modalCorreo").textContent = order.email;
+      document.getElementById("modalProducto").textContent = order.eventType;
+      document.getElementById("modalCantidad").textContent = order.quantity;
+      document.getElementById("modalNotas").textContent = order.notes || "-";
+      document.getElementById("modalEstado").textContent = order.status;
+      document.getElementById("copyId").onclick = () => {
+        navigator.clipboard?.writeText(order.id).then(()=>showToast("ID copiado al portapapeles")).catch(()=>alert("No se pudo copiar automáticamente. Selecciona y copia."));
+      };
+      document.getElementById("markShippedModal").onclick = () => { toggleShipped(order.id); orderModal.hide(); };
+      orderModal.show();
+    }
+
+    orderForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const eventType = document.getElementById("eventType").value.trim();
+      const quantity = parseInt(document.getElementById("quantity").value, 10) || 1;
+      const notes = document.getElementById("notes").value.trim();
+      if (!name || !email || !eventType){ showAlert("Completa nombre, correo y tipo de evento."); return; }
+      hideAlert();
+      const order = { id: generateOrderId(), name, email, eventType, quantity, total: quantity, notes, status: "Pendiente", createdAt: new Date().toISOString() };
+      addOrder(order);
+      orderModal.show();
+      orderForm.reset(); document.getElementById("quantity").value = 1; });
+
+    document.getElementById("btnClearAll").addEventListener("click", () => {
+      if (!confirm("¿Eliminar TODOS los pedidos? Esta acción no se puede deshacer.")) return;
+      orders = []; saveOrders(); renderOrders();
+    });
+    document.getElementById("btnToggleTheme").addEventListener("click", function(){
+      document.body.classList.toggle("bg-light");
+      this.classList.toggle("btn-outline-light");
+      this.classList.toggle("btn-success");
+      this.textContent = this.classList.contains("btn-success") ? "Modo demo activo" : "Alternar modo demo";
+    });
+
+    (function init(){ loadOrders(); renderOrders(); })();
+  </script>
+</body>
+</html>
